@@ -1,0 +1,12 @@
+.cipher_output_container {
+    position: relative;
+}
+
+.copy-button {
+    position: absolute;
+    top: 24px; /* Adjust based on your design needs */
+    right: 10px; /* Adjust based on your design needs */
+    z-index: 10;
+    width: 50px;
+    height: 37px
+}
