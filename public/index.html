@@ -63,6 +63,29 @@
         textarea.select();
         document.execCommand('copy');
     }
+    
+    async function validateCipher() {
+        const cipherInput = document.getElementById('cipher_input').value;
+
+        // Send the key to the Netlify function
+        const response = await fetch('/.netlify/functions/validate-key', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ key: cipherInput })
+        });
+
+        const data = await response.json();
+
+        // Update the cipher_output based on server response
+        const cipherOutput = document.getElementById('cipher_output');
+        if (data.status === "success") {
+            cipherOutput.value = "Key is valid!";
+        } else {
+            cipherOutput.value = "Invalid key!";
+        }
+    }
     </script>
   </body>
 </html>
