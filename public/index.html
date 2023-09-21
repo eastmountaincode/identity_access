@@ -12,18 +12,18 @@
 
     <style>
         /* Custom responsive width classes based on Bootstrap's breakpoints */
-        .w-xs-altar {width: 70% !important}
+        .w-xs-yidam {width: 70% !important}
         @media (min-width: 576px) { /* sm */
-            .w-sm-altar { width: 50% !important; }
+            .w-sm-yidam { width: 50% !important; }
         }
         @media (min-width: 768px) { /* md */
-            .w-md-altar { width: 35% !important; }
+            .w-md-yidam { width: 35% !important; }
         }
         @media (min-width: 992px) { /* lg */
-            .w-lg-altar { width: 25% !important; }
+            .w-lg-yidam { width: 25% !important; }
         }
         @media (min-width: 1200px) { /* xl */
-            .w-xl-altar { width: 25% !important; }
+            .w-xl-yidam { width: 25% !important; }
         }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,22 +36,25 @@
     <div class="screen-size-indicator d-none d-lg-block d-xl-none">LG Screen</div>
     <div class="screen-size-indicator d-none d-xl-block">XL Screen</div>
 
-    <div class="altar_image_container m-4">
-      <img src="images/altar_image.png" alt="altar_image" class="mx-auto d-block w-xs-altar w-sm-altar w-md-altar w-lg-altar w-xl-altar">
+    <div class="yidam_image_container m-4">
+      <img src="images/yidam_image.png" alt="yidam_image" class="mx-auto d-block w-xs-yidam w-sm-yidam w-md-yidam w-lg-yidam w-xl-yidam">
+      <div class="text-center m-4" id="cipher_subtitle">
+        <code>8OXG9pyv1NyowyojohT5oBmpAwg9FwB2F5sFSbhDVmJIam6MjHCuhddn5A4yV6To2p85mAGxRJUZTaKbq7aX98HNS70AXXnaWPURZo2HtIZNaX9tSFPxihNhNNK2b8gOg0rdg16ebmuLpX9/y+3SvQz95rkdf+tIpimG56xpWrE=</code>
+      </div>
     </div>
 
     <div class="container">
       <div class="row">
           <div class="cipher_input_container col-10 offset-1 col-md-10 offset-md-1 mt-3 mb-3">
-              <input type="text" class="form-control" id="cipher_input" placeholder="CIPHER TEXT">
+              <input type="text" class="form-control" id="cipher_input" placeholder="INPUT">
               <div class="d-flex justify-content-center mt-2">
-                <button type="button" class="btn btn-primary" onclick="validateCipher()">ENTRY</button>
+                <button type="button" class="btn btn-primary" onclick="validateCipherLocalTest()" id="non_dualism_button">(advaita) (अद्वैत)</button>
               </div>
           </div>
           <div class="cipher_output_container col-10 offset-1 col-xs-8 offset-xs-2 col-md-10 offset-md-1 mb-3">
-              <label for="cipher_output" class="text-center d-block">There could be a label here or not:</label>
-              <textarea id="cipher_output" class="form-control" rows="1" readonly style="resize: none"></textarea>
-              <button onclick="copyToClipboard()" class="btn btn-secondary copy-button"><i class="fa-solid fa-copy"></i></button>
+              <!-- <label for="cipher_output" class="text-center d-block">There could be a label here or not:</label> -->
+              <textarea id="cipher_output" class="form-control" rows="1" readonly style="resize: none" placeholder="OUTPUT"></textarea>
+              <!-- <button onclick="copyToClipboard()" class="btn btn-secondary copy-button"><i class="fa-solid fa-copy"></i></button> -->
 
           </div>
       </div>
@@ -65,7 +68,7 @@
     }
 
     async function validateCipher() {
-        const cipherInput = document.getElementById('cipher_input').value;
+        const cipherInputText = document.getElementById('cipher_input').value;
 
         // Send the key to the Netlify function
         const response = await fetch('/.netlify/functions/validate-key', {
@@ -73,15 +76,92 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ key: cipherInput })
+            body: JSON.stringify({ key: cipherInputText })
         });
 
         const data = await response.json();
 
+        const bodyElement = document.body;
+        bodyElement.style.transition = 'background-color 3s';
+
+        const cipherInputElement = document.getElementById('cipher_input');
+        cipherInputElement.style.transition = 'background-color 3s, color 3s';
+
+        const cipherSubtitleElement = document.getElementById('cipher_subtitle');
+        const cipherSubtitleCodeElement = cipherSubtitleElement.querySelector('code');
+        cipherSubtitleElement.style.transition = 'color 3s';
+        cipherSubtitleCodeElement.style.transition = 'color 3s';
+
+        const non_dualism_button = document.getElementById('non_dualism_button');
+        non_dualism_button.style.transition = 'background-color 3s, color 3s';
+
+        const cipherOutputElement = document.getElementById('cipher_output');
+        cipherOutputElement.style.transition = 'background-color 3s, color 3s';
+
+        if (data.status === "success") {
+            cipherOutputElement.value = "Key is valid!";
+            bodyElement.style.backgroundColor = '#26619c'; // Lapis Lazuli light
+
+            // Change text input colors on success
+            cipherInputElement.style.backgroundColor = '#26619c'; 
+            cipherInputElement.style.color = '#000'; // Black text color
+
+            cipherSubtitleElement.style.color = '#6790b9';
+            cipherSubtitleCodeElement.style.color = '#6790b9';
+
+            non_dualism_button.style.color = '#26619c';
+            non_dualism_button.style.backgroundColor = '#26619c';
+            non_dualism_button.classList.add('btn-custom-color');
+
+            cipherOutputElement.style.backgroundColor = '#26619c'; 
+            cipherOutputElement.style.color = '#ffffff'; // White text color
+        } else {
+            cipherOutputElement.value = "Invalid key!";
+        }
+    }
+
+
+    async function validateCipherLocalTest() {
+        const cipherInputText = document.getElementById('cipher_input').value;
+
+        const bodyElement = document.body
+        bodyElement.style.transition = 'background-color 3s';
+
+        const cipherInputElement = document.getElementById('cipher_input')
+        cipherInputElement.style.transition = 'background-color 3s, color 3s';
+
+        const cipherSubtitleElement = document.getElementById('cipher_subtitle')
+        const cipherSubtitleCodeElement = cipherSubtitleElement.querySelector('code');
+
+        cipherSubtitleElement.style.transition = 'color 3s';
+        cipherSubtitleCodeElement.style.transition = 'color 3s';
+
+        const non_dualism_button = document.getElementById('non_dualism_button')
+        non_dualism_button.style.transition = 'background-color 3s, color 3s'
+
+        const cipherOutputElement = document.getElementById('cipher_output')
+        cipherOutputElement.style.transition = 'background-color 3s, color 3s'
+
+
         // Update the cipher_output based on server response
         const cipherOutput = document.getElementById('cipher_output');
-        if (data.status === "success") {
+        if (cipherInputText === "123") {
             cipherOutput.value = "Key is valid!";
+            bodyElement.style.backgroundColor = '#26619c'; // Lapis Lazuli light
+
+            // Change text input colors on success
+            cipherInputElement.style.backgroundColor = '#26619c'; 
+            cipherInputElement.style.color = '#000'; // Black text color
+
+            cipherSubtitleElement.style.color = '#6790b9';
+            cipherSubtitleCodeElement.style.color = '#6790b9';
+
+            non_dualism_button.style.color = '#26619c'
+            non_dualism_button.style.backgroundColor = '#26619c'
+            non_dualism_button.classList.add('btn-custom-color');
+
+            cipherOutputElement.style.backgroundColor = '#26619c'; 
+            cipherOutputElement.style.color = '#ffffff'; // White text color
         } else {
             cipherOutput.value = "Invalid key!";
         }

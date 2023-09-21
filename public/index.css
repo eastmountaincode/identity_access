@@ -4,9 +4,14 @@
 
 .copy-button {
     position: absolute;
-    top: 24px; /* Adjust based on your design needs */
-    right: 10px; /* Adjust based on your design needs */
+    top: 0px;
+    right: 10px; 
     z-index: 10;
     width: 50px;
-    height: 37px
+    height: 38px
+}
+
+.btn.btn-primary.btn-custom-color {
+    background-color: #26619c;
+    color: #000;
 }
