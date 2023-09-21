@@ -4,11 +4,12 @@
 
 .copy-button {
     position: absolute;
-    top: 0px;
-    right: 10px; 
+    top: 2px;
+    right: 14px; 
     z-index: 10;
-    width: 50px;
-    height: 38px
+    width: 44px;
+    height: 34px;
+    background-color: none;
 }
 
 .btn.btn-primary.btn-custom-color {
@@ -28,4 +29,11 @@
 
 #bottom_padding {
     height: 150px;
+}
+
+#copy_confirm_text {
+    text-align: center;
+    font-weight: bold;
+    padding: 10px
+
 }

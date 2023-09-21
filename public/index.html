@@ -48,13 +48,16 @@
           <div class="cipher_input_container col-10 offset-1 col-md-10 offset-md-1 mt-3 mb-3">
               <input type="text" class="form-control" id="cipher_input" placeholder="INPUT">
               <div class="d-flex justify-content-center mt-2">
-                <button type="button" tabindex="-1" class="" onclick="validateCipherLocalTest()" id="non_dualism_button">(advaita) (अद्वैत)</button>
+                <button type="button" tabindex="-1" class="" onclick="validateCipher()" id="non_dualism_button">(advaita) (अद्वैत)</button>
               </div>
           </div>
           <div class="cipher_output_container col-10 offset-1 col-xs-8 offset-xs-2 col-md-10 offset-md-1 mb-3">
               <!-- <label for="cipher_output" class="text-center d-block">There could be a label here or not:</label> -->
               <textarea id="cipher_output" class="form-control" rows="1" readonly style="resize: none" placeholder="OUTPUT"></textarea>
-              <!-- <button onclick="copyToClipboard()" class="btn btn-secondary copy-button"><i class="fa-solid fa-copy"></i></button> -->
+              <button onclick="copyToClipboard()" id= 'copy-button' class="copy-button" disabled>
+                <i class="fa-regular fa-copy"></i>
+              </button>
+              <div id="copy_confirm_text"></div>
 
           </div>
       </div>
@@ -66,9 +69,17 @@
         const textarea = document.getElementById('cipher_output');
         textarea.select();
         document.execCommand('copy');
+        const confirmText = document.getElementById('copy_confirm_text');
+        confirmText.innerText = "Copied to clipboard.";
+
+        // Make the text disappear after 3 seconds
+        setTimeout(() => {
+            confirmText.innerText = '';
+        }, 3000);
     }
 
 
+    let LOCAL_TEST = 0;
 
     async function validateCipher() {
         const cipherInputText = document.getElementById('cipher_input').value;
@@ -79,6 +90,7 @@
         const cipherSubtitleCodeElement = cipherSubtitleElement.querySelector('code');
         const non_dualism_button = document.getElementById('non_dualism_button');
         const cipherOutputElement = document.getElementById('cipher_output');
+        const copyButton = document.getElementById('copy-button');
 
         bodyElement.style.transition = 'background-color 3s';
         cipherInputElement.style.transition = 'background-color 3s, color 3s';
@@ -87,15 +99,17 @@
         non_dualism_button.style.transition = 'background-color 3s, color 3s';
         cipherOutputElement.style.transition = 'background-color 3s, color 3s';
 
-        const response = await fetch('/.netlify/functions/validate-key', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ key: cipherInputText })
-        });
-        const data = await response.json();
-        isValid = data.status === "success";
+        if (LOCAL_TEST === 0) {
+            const response = await fetch('/.netlify/functions/validate-key', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ key: cipherInputText })
+            });
+            const data = await response.json();
+            isValid = data.status === "success";
+        }
 
         if (isValid) {
             cipherOutputElement.value = "Key is valid!";
@@ -118,64 +132,15 @@
             cipherSubtitleElement.classList.add("hover-outline");
             non_dualism_button.classList.add("hover-outline");
             cipherOutputElement.classList.add("hover-outline");
+
+            copyButton.disabled = false;
+            non_dualism_button.disabled = true;
+
         } else {
             cipherOutputElement.value = "Invalid key!";
         }
     }
 
-
-
-    async function validateCipherLocalTest() {
-        const cipherInputText = document.getElementById('cipher_input').value;
-
-        const bodyElement = document.body
-        bodyElement.style.transition = 'background-color 2s';
-
-        const cipherInputElement = document.getElementById('cipher_input')
-        cipherInputElement.style.transition = 'background-color 2s, color 2s';
-
-        const cipherSubtitleElement = document.getElementById('cipher_subtitle')
-        const cipherSubtitleCodeElement = cipherSubtitleElement.querySelector('code');
-
-        cipherSubtitleElement.style.transition = 'color 2s';
-        cipherSubtitleCodeElement.style.transition = 'color 2s';
-
-        const non_dualism_button = document.getElementById('non_dualism_button')
-        non_dualism_button.style.transition = 'background-color 2s, color 2s'
-
-        const cipherOutputElement = document.getElementById('cipher_output')
-        cipherOutputElement.style.transition = 'background-color 2s, color 2s'
-
-
-        // Update the cipher_output based on server response
-        const cipherOutput = document.getElementById('cipher_output');
-        if (cipherInputText === "123") {
-            cipherOutput.value = "Key is valid! Output goes here";
-            bodyElement.style.backgroundColor = '#26619c'; // Lapis Lazuli light
-
-            // Change text input colors on success
-            cipherInputElement.style.backgroundColor = '#26619c'; 
-            cipherInputElement.style.color = '#6790b9'; // Black text color
-
-            cipherSubtitleElement.style.color = '#6790b9'; // lighter blue
-            cipherSubtitleCodeElement.style.color = '#6790b9';
-
-            non_dualism_button.style.color = '#6790b9'
-            non_dualism_button.style.backgroundColor = '#26619c'
-            non_dualism_button.classList.add('btn-custom-color');
-
-            cipherOutputElement.style.backgroundColor = '#26619c'; 
-            cipherOutputElement.style.color = '#ffffff'; // White text color
-
-            cipherInputElement.classList.add("hover-outline")
-            cipherSubtitleElement.classList.add("hover-outline")
-            non_dualism_button.classList.add("hover-outline")
-            cipherOutputElement.classList.add("hover-outline")
-
-        } else {
-            cipherOutput.value = "Invalid key!";
-        }
-    }
     </script>
   </body>
 </html>
