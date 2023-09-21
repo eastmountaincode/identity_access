@@ -25,3 +25,7 @@
     outline: none;
     box-shadow: none;
 }
+
+#bottom_padding {
+    height: 150px;
+}
