@@ -30,11 +30,11 @@
 
   </head>
   <body>
-    <div class="screen-size-indicator d-block d-sm-none">XS Screen</div>
+    <!-- <div class="screen-size-indicator d-block d-sm-none">XS Screen</div>
     <div class="screen-size-indicator d-none d-sm-block d-md-none">SM Screen</div>
     <div class="screen-size-indicator d-none d-md-block d-lg-none">MD Screen</div>
     <div class="screen-size-indicator d-none d-lg-block d-xl-none">LG Screen</div>
-    <div class="screen-size-indicator d-none d-xl-block">XL Screen</div>
+    <div class="screen-size-indicator d-none d-xl-block">XL Screen</div> -->
 
     <div class="yidam_image_container m-4">
       <img src="images/yidam_image.png" alt="yidam_image" class="mx-auto d-block w-xs-yidam w-sm-yidam w-md-yidam w-lg-yidam w-xl-yidam">
@@ -48,7 +48,7 @@
           <div class="cipher_input_container col-10 offset-1 col-md-10 offset-md-1 mt-3 mb-3">
               <input type="text" class="form-control" id="cipher_input" placeholder="INPUT">
               <div class="d-flex justify-content-center mt-2">
-                <button type="button" class="btn btn-primary" onclick="validateCipherLocalTest()" id="non_dualism_button">(advaita) (अद्वैत)</button>
+                <button type="button" tabindex="-1" class="" onclick="validateCipherLocalTest()" id="non_dualism_button">(advaita) (अद्वैत)</button>
               </div>
           </div>
           <div class="cipher_output_container col-10 offset-1 col-xs-8 offset-xs-2 col-md-10 offset-md-1 mb-3">
@@ -67,10 +67,25 @@
         document.execCommand('copy');
     }
 
+
+
     async function validateCipher() {
         const cipherInputText = document.getElementById('cipher_input').value;
 
-        // Send the key to the Netlify function
+        const bodyElement = document.body;
+        const cipherInputElement = document.getElementById('cipher_input');
+        const cipherSubtitleElement = document.getElementById('cipher_subtitle');
+        const cipherSubtitleCodeElement = cipherSubtitleElement.querySelector('code');
+        const non_dualism_button = document.getElementById('non_dualism_button');
+        const cipherOutputElement = document.getElementById('cipher_output');
+
+        bodyElement.style.transition = 'background-color 3s';
+        cipherInputElement.style.transition = 'background-color 3s, color 3s';
+        cipherSubtitleElement.style.transition = 'color 3s';
+        cipherSubtitleCodeElement.style.transition = 'color 3s';
+        non_dualism_button.style.transition = 'background-color 3s, color 3s';
+        cipherOutputElement.style.transition = 'background-color 3s, color 3s';
+
         const response = await fetch('/.netlify/functions/validate-key', {
             method: 'POST',
             headers: {
@@ -78,90 +93,84 @@
             },
             body: JSON.stringify({ key: cipherInputText })
         });
-
         const data = await response.json();
+        isValid = data.status === "success";
 
-        const bodyElement = document.body;
-        bodyElement.style.transition = 'background-color 3s';
-
-        const cipherInputElement = document.getElementById('cipher_input');
-        cipherInputElement.style.transition = 'background-color 3s, color 3s';
-
-        const cipherSubtitleElement = document.getElementById('cipher_subtitle');
-        const cipherSubtitleCodeElement = cipherSubtitleElement.querySelector('code');
-        cipherSubtitleElement.style.transition = 'color 3s';
-        cipherSubtitleCodeElement.style.transition = 'color 3s';
-
-        const non_dualism_button = document.getElementById('non_dualism_button');
-        non_dualism_button.style.transition = 'background-color 3s, color 3s';
-
-        const cipherOutputElement = document.getElementById('cipher_output');
-        cipherOutputElement.style.transition = 'background-color 3s, color 3s';
-
-        if (data.status === "success") {
+        if (isValid) {
             cipherOutputElement.value = "Key is valid!";
-            bodyElement.style.backgroundColor = '#26619c'; // Lapis Lazuli light
+            bodyElement.style.backgroundColor = '#26619c';
 
-            // Change text input colors on success
-            cipherInputElement.style.backgroundColor = '#26619c'; 
-            cipherInputElement.style.color = '#000'; // Black text color
+            cipherInputElement.style.backgroundColor = '#26619c';
+            cipherInputElement.style.color = '#6790b9';
 
             cipherSubtitleElement.style.color = '#6790b9';
             cipherSubtitleCodeElement.style.color = '#6790b9';
 
-            non_dualism_button.style.color = '#26619c';
+            non_dualism_button.style.color = '#6790b9';
             non_dualism_button.style.backgroundColor = '#26619c';
             non_dualism_button.classList.add('btn-custom-color');
 
-            cipherOutputElement.style.backgroundColor = '#26619c'; 
-            cipherOutputElement.style.color = '#ffffff'; // White text color
+            cipherOutputElement.style.backgroundColor = '#26619c';
+            cipherOutputElement.style.color = '#6790b9';
+
+            cipherInputElement.classList.add("hover-outline");
+            cipherSubtitleElement.classList.add("hover-outline");
+            non_dualism_button.classList.add("hover-outline");
+            cipherOutputElement.classList.add("hover-outline");
         } else {
             cipherOutputElement.value = "Invalid key!";
         }
     }
 
 
+
     async function validateCipherLocalTest() {
         const cipherInputText = document.getElementById('cipher_input').value;
 
         const bodyElement = document.body
-        bodyElement.style.transition = 'background-color 3s';
+        bodyElement.style.transition = 'background-color 2s';
 
         const cipherInputElement = document.getElementById('cipher_input')
-        cipherInputElement.style.transition = 'background-color 3s, color 3s';
+        cipherInputElement.style.transition = 'background-color 2s, color 2s';
 
         const cipherSubtitleElement = document.getElementById('cipher_subtitle')
         const cipherSubtitleCodeElement = cipherSubtitleElement.querySelector('code');
 
-        cipherSubtitleElement.style.transition = 'color 3s';
-        cipherSubtitleCodeElement.style.transition = 'color 3s';
+        cipherSubtitleElement.style.transition = 'color 2s';
+        cipherSubtitleCodeElement.style.transition = 'color 2s';
 
         const non_dualism_button = document.getElementById('non_dualism_button')
-        non_dualism_button.style.transition = 'background-color 3s, color 3s'
+        non_dualism_button.style.transition = 'background-color 2s, color 2s'
 
         const cipherOutputElement = document.getElementById('cipher_output')
-        cipherOutputElement.style.transition = 'background-color 3s, color 3s'
+        cipherOutputElement.style.transition = 'background-color 2s, color 2s'
 
 
         // Update the cipher_output based on server response
         const cipherOutput = document.getElementById('cipher_output');
         if (cipherInputText === "123") {
-            cipherOutput.value = "Key is valid!";
+            cipherOutput.value = "Key is valid! Output goes here";
             bodyElement.style.backgroundColor = '#26619c'; // Lapis Lazuli light
 
             // Change text input colors on success
             cipherInputElement.style.backgroundColor = '#26619c'; 
-            cipherInputElement.style.color = '#000'; // Black text color
+            cipherInputElement.style.color = '#6790b9'; // Black text color
 
-            cipherSubtitleElement.style.color = '#6790b9';
+            cipherSubtitleElement.style.color = '#6790b9'; // lighter blue
             cipherSubtitleCodeElement.style.color = '#6790b9';
 
-            non_dualism_button.style.color = '#26619c'
+            non_dualism_button.style.color = '#6790b9'
             non_dualism_button.style.backgroundColor = '#26619c'
             non_dualism_button.classList.add('btn-custom-color');
 
             cipherOutputElement.style.backgroundColor = '#26619c'; 
             cipherOutputElement.style.color = '#ffffff'; // White text color
+
+            cipherInputElement.classList.add("hover-outline")
+            cipherSubtitleElement.classList.add("hover-outline")
+            non_dualism_button.classList.add("hover-outline")
+            cipherOutputElement.classList.add("hover-outline")
+
         } else {
             cipherOutput.value = "Invalid key!";
         }
