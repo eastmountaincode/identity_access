@@ -92,7 +92,7 @@
     }
 
 
-    let LOCAL_TEST = 1;
+    let LOCAL_TEST = 0;
 
     async function validateCipher() {
         const cipherInputText = document.getElementById('cipher_input').value;
@@ -123,8 +123,6 @@
             const data = await response.json();
             isValid = data.status === "success";
         }
-
-        isValid = true;
 
         if (isValid) {
             cipherOutputElement.value = "Key is valid! Output goes here.";
