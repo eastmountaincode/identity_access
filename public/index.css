@@ -12,10 +12,10 @@
     background-color: none;
 }
 
-.btn.btn-primary.btn-custom-color {
+.btn.btn-custom-color {
     background-color: #26619c;
     color: #6790b9;
-}
+} 
 
 .btn.btn-primary.btn-custom-color:focus {
     box-shadow: none;
@@ -37,3 +37,9 @@
     padding: 10px
 
 }
+
+.about_text {
+    font-style: italic;
+}
+
+
